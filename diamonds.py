@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -24,8 +25,14 @@ def priceRange():
 
 def specificDiamond():
     diamondList = []
-    minCarat = float(input("Carat range (0.20-5.01) from: "))
-    maxCarat = float(input("up to "))
+    while True:
+        try:
+            minCarat = float(input("Carat range (0.20-5.01) from: "))
+            maxCarat = float(input("up to "))
+        except ValueError:
+            print("You need to enter a number!")
+            continue
+        break
     for d in diamonds.carat:
         if d >= minCarat and d <= maxCarat:
             diamondList.append(True)
@@ -39,6 +46,8 @@ def specificDiamond():
         if diamondList[i] == True:
             rows = diamonds.loc[[i]]
             print(rows.to_string(header = False))
+    if True not in diamondList:
+        print("There's no diamonds in that carat range!")
 
 def makePlot():
     information = diamonds.groupby('cut', as_index=False)['price'].mean()
@@ -63,7 +72,8 @@ while i == True:
     4. Print out information for diamonds in specific carat range,
     5. Print information about price ranges,
     6. Print a plot showing cut to average price,
-    7. Exit the program.
+    7. Generate statistics,
+    8. Exit the program.
                                      """)
     try:
         n = int(input("Choose: "))
@@ -73,10 +83,22 @@ while i == True:
     if n == 0:
         print(diamonds)
     if n == 1:
-        x = int(input("How many first rows of data would you like to see? "))
+        while True:
+            try:
+                x = int(input("How many first rows of data would you like to see? "))
+            except:
+                print("Wrong input, try again")
+                continue
+            break
         firstRows(x)
     if n == 2:
-        x = int(input("How many last rows of data would you like to see? "))
+        while True:
+            try:
+                x = int(input("How many last rows of data would you like to see? "))
+            except:
+                print("Wrong input, try again")
+                continue
+            break
         lastRows(x)
     if n == 3:
         basicInfo()
@@ -87,6 +109,8 @@ while i == True:
     if n == 6:
         makePlot()
     if n == 7:
+        print(diamonds.describe())
+    if n == 8:
         print("Goodbye :>")
         i = False
     print("")
