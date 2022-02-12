@@ -46,7 +46,7 @@ def makePlot():
     ypoints = np.array(information['price'])
     print(ypoints)
     print(xpoints)
-    plt.plot(xpoints,ypoints)
+    plt.plot(xpoints,ypoints, marker='o')
     plt.xlabel("Cut")
     plt.ylabel("Price")
     plt.title("Cut to average price")
