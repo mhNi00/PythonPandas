@@ -5,6 +5,19 @@ import numpy as np
 pd.options.display.max_rows = 53940
 diamonds = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/diamonds.csv')
 i = True
+#Funkcja która bierze carat i wypisuje po przecniku wszystkie inne parametry matchujące ten carat
+def caratSpecific(x):
+    diamondList = []
+    for d in diamonds.carat:
+        if d == x:
+            diamondList.append(True)
+        else:
+            diamondList.append(False)
+    print(diamondList) #Teraz mam liste miejsc w których wystepuje dany carat, wystarczy wyciągnąć wszystkie informacje z True
+
+def exportExcel(): #Export do excela, w przyszlosci dodac wybor kolumn do exportu zadanych w stringu przez uzytkownika
+    dataFrame = diamonds.reindex(columns=['carat','table'])
+    dataFrame.to_excel('test.xlsx', index=False)
 
 def firstRows(x):
     print("")
@@ -61,7 +74,6 @@ def makePlot():
     plt.title("Cut to average price")
     plt.show()
 
-print("caratmin-caratmax",diamonds['carat'].min(),diamonds['carat'].max())
 while i == True:
     n = 99
     print("""What would you like to do with the data?
@@ -73,7 +85,9 @@ while i == True:
     5. Print information about price ranges,
     6. Print a plot showing cut to average price,
     7. Generate statistics,
-    8. Exit the program.
+    8. Export carat and table columns to excel,
+    9. Print all data with specific carat number seperated by commas,
+    10. Exit the program.
                                      """)
     try:
         n = int(input("Choose: "))
@@ -111,6 +125,17 @@ while i == True:
     if n == 7:
         print(diamonds.describe())
     if n == 8:
+        exportExcel()
+    if n == 9:
+        while True:
+            try:
+                x = float(input("What carat information would you like to see? "))
+            except:
+                print("Wrong input, try again")
+                continue
+            break
+        caratSpecific(x)
+    if n == 10:
         print("Goodbye :>")
         i = False
     print("")
