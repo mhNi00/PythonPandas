@@ -2,6 +2,7 @@ from asyncio.windows_events import NULL
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import re
 pd.options.display.max_rows = 53940
 diamonds = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/diamonds.csv')
 i = True
@@ -19,8 +20,9 @@ def caratSpecific(x):
             cut += diamonds._get_value(i,'cut') + ','
     print('Carat',x,'cut:',cut)
 
-def exportExcel(): #Export do excela, w przyszlosci dodac wybor kolumn do exportu zadanych w stringu przez uzytkownika
-    dataFrame = diamonds.reindex(columns=['carat','table'])
+def exportExcel(x): #Zrobić (regex?) żeby ignorowal spacje przy inpucie
+    colList = x.split(",")
+    dataFrame = diamonds.reindex(columns=colList)
     dataFrame.to_excel('test.xlsx', index=False)
 
 def firstRows(x):
@@ -89,7 +91,7 @@ while i == True:
     5. Print information about price ranges,
     6. Print a plot showing cut to average price,
     7. Generate statistics,
-    8. Export carat and table columns to xlsx file,
+    8. Export columns to xlsx file,
     9. Print all cuts with specific carat number seperated by commas,
     10. Exit the program.
                                      """)
@@ -129,7 +131,14 @@ while i == True:
     if n == 7:
         print(diamonds.describe())
     if n == 8:
-        exportExcel()
+        while True:
+            try:
+                x = input("Which columns would you like to export? ")
+            except:
+                print("Wrong input, try again")
+                continue
+            break
+        exportExcel(x)
     if n == 9:
         while True:
             try:
