@@ -5,7 +5,7 @@ import numpy as np
 pd.options.display.max_rows = 53940
 diamonds = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/diamonds.csv')
 i = True
-#Funkcja która bierze carat i wypisuje po przecniku wszystkie inne parametry matchujące ten carat
+
 def caratSpecific(x):
     diamondList = []
     for d in diamonds.carat:
@@ -13,10 +13,11 @@ def caratSpecific(x):
             diamondList.append(True)
         else:
             diamondList.append(False)
-    #Teraz mam liste miejsc w których wystepuje dany carat, wystarczy wyciągnąć wszystkie informacje z True
+    cut = ''
     for i in range(len(diamondList)):
         if diamondList[i] == True:
-            print(diamonds.loc[[i]])
+            cut += diamonds._get_value(i,'cut') + ','
+    print('Carat',x,'cut:',cut)
 
 def exportExcel(): #Export do excela, w przyszlosci dodac wybor kolumn do exportu zadanych w stringu przez uzytkownika
     dataFrame = diamonds.reindex(columns=['carat','table'])
@@ -88,8 +89,8 @@ while i == True:
     5. Print information about price ranges,
     6. Print a plot showing cut to average price,
     7. Generate statistics,
-    8. Export carat and table columns to excel,
-    9. Print all data with specific carat number seperated by commas,
+    8. Export carat and table columns to xlsx file,
+    9. Print all cuts with specific carat number seperated by commas,
     10. Exit the program.
                                      """)
     try:
