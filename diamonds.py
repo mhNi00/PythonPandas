@@ -13,7 +13,10 @@ def caratSpecific(x):
             diamondList.append(True)
         else:
             diamondList.append(False)
-    print(diamondList) #Teraz mam liste miejsc w których wystepuje dany carat, wystarczy wyciągnąć wszystkie informacje z True
+    #Teraz mam liste miejsc w których wystepuje dany carat, wystarczy wyciągnąć wszystkie informacje z True
+    for i in range(len(diamondList)):
+        if diamondList[i] == True:
+            print(diamonds.loc[[i]])
 
 def exportExcel(): #Export do excela, w przyszlosci dodac wybor kolumn do exportu zadanych w stringu przez uzytkownika
     dataFrame = diamonds.reindex(columns=['carat','table'])
