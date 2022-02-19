@@ -20,8 +20,9 @@ def caratSpecific(x):
             cut += diamonds._get_value(i,'cut') + ','
     print('Carat',x,'cut:',cut)
 
-def exportExcel(x): #Zrobić (regex?) żeby ignorowal spacje przy inpucie
-    colList = x.split(",")
+def exportExcel(x):
+    y = re.sub(r"\s+","", x)
+    colList = y.split(",")
     dataFrame = diamonds.reindex(columns=colList)
     dataFrame.to_excel('test.xlsx', index=False)
 
