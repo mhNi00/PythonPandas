@@ -57,7 +57,7 @@ def specificDiamond():
         break
     values = re.split('[\-]',inputCarat)
     for d in diamonds.carat:
-        if d >= float(values[0]) and d <= float(values[1]):
+        if  float(values[1]) >= d >= float(values[0]):
             diamondList.append(True)
         else:
             diamondList.append(False)
