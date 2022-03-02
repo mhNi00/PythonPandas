@@ -6,7 +6,8 @@ import re
 pd.options.display.max_rows = 53940
 diamonds = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/diamonds.csv')
 i = True
-
+class WrongInput(Exception):
+    pass
 def caratSpecific(x):
     diamondList = []
     for d in diamonds.carat:
@@ -33,7 +34,6 @@ def firstRows(x):
 def lastRows(x):
     print("")
     print(diamonds.tail(x))
-
 def basicInfo():
     print("")
     print(diamonds.info())
@@ -47,27 +47,30 @@ def specificDiamond():
     diamondList = []
     while True:
         try:
-            minCarat = float(input("Carat range (0.20-5.01) from: "))
-            maxCarat = float(input("up to "))
-        except ValueError:
-            print("You need to enter a number!")
+            inputCarat = input("Carat range (0.20-5.01): ")
+            stringCheck = bool(re.search('^([\d]+.[\d]+|[\d]+)[ ]*-[ ]*([\d]+.[\d]+|[\d])$', inputCarat))
+            if stringCheck == False:
+                raise WrongInput
+        except WrongInput:
+            print("You need to enter a correct number range!")
             continue
         break
+    values = re.split('[\-]',inputCarat)
     for d in diamonds.carat:
-        if d >= minCarat and d <= maxCarat:
+        if d >= float(values[0]) and d <= float(values[1]):
             diamondList.append(True)
         else:
             diamondList.append(False)
     j = 0
     for i in range(len(diamonds)):
-        if j == 0 and diamondList[i] == True:
+        if j == 0 and diamondList[i] == True: #First if is to print out the header information
             print(diamonds.loc[[i]])
             j+=1
         if diamondList[i] == True:
             rows = diamonds.loc[[i]]
             print(rows.to_string(header = False))
     if True not in diamondList:
-        print("There's no diamonds in that carat range!")
+        print("There are no diamonds in that carat range!")
 
 def makePlot():
     information = diamonds.groupby('cut', as_index=False)['price'].mean()
