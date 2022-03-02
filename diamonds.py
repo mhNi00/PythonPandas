@@ -86,7 +86,9 @@ def makePlot():
 
 while i == True:
     n = 99
-    print("""What would you like to do with the data?
+    print("""
+    What would you like to do with the data?
+
     0. Print out all rows (might take up to a minute!),
     1. Print first x rows of data,
     2. Print last x rows of data,
